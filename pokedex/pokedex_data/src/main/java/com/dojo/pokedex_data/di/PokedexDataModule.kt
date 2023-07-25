@@ -6,7 +6,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
-import com.dojo.pokedex_data.local.PokeDatabase
+import com.dojo.pokedex_data.local.PokemonDatabase
 import com.dojo.pokedex_data.remote.PokemonApi
 import com.dojo.pokedex_data.repository.PokedexRepositoryImpl
 import com.dojo.pokedex_domain.repository.PokedexRepository
@@ -49,10 +49,10 @@ class PokedexDataModule {
 
     @Provides
     @Singleton
-    fun providePokemonDataBase(app: Application) : PokeDatabase {
+    fun providePokemonDataBase(app: Application) : PokemonDatabase {
         return Room.databaseBuilder(
             app,
-            PokeDatabase::class.java,
+            PokemonDatabase::class.java,
             "poke_db"
         ).build()
     }
@@ -61,7 +61,7 @@ class PokedexDataModule {
     @Singleton
     fun provideProkemonUseCases(
         api: PokemonApi,
-        db: PokeDatabase
+        db: PokemonDatabase
     ): PokedexRepository {
         return PokedexRepositoryImpl(
             api,

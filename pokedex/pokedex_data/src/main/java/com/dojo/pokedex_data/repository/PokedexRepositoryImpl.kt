@@ -97,16 +97,14 @@ class PokedexRepositoryImpl(
             if(name.isBlank()) {
                 return Result.success(emptyList())
             }
-            return dao.searchPokemonByName(name).map { list ->
-                return Result.success(
-                    list.map {
+            val list  = dao.searchPokemonByName(name).map {
                         val listTypes = dao.getPokemonTypeByPokemonId(it.id)
                         val listAbilities = dao.getPokemonAbilityByPokemonId(it.id)
                         val listLocation = dao.getPokemonLocationAreaByPokemonId(it.id)
                         it.ToPokemonDomain(listTypes, listAbilities, listLocation)
                     }
-                )
-            }
+            return Result.success(list)
+
         } catch (e: Exception) {
             e.printStackTrace()
             return Result.failure(e)

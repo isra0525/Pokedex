@@ -17,5 +17,5 @@ import com.dojo.pokedex_data.local.entity.*
     version = 1
 )
 abstract class PokemonDatabase: RoomDatabase() {
-    abstract val dao: PokedexDao
+    abstract val dao: PokeDao
 }

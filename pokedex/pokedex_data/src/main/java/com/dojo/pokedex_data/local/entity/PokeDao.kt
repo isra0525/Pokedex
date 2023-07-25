@@ -19,12 +19,6 @@ interface PokeDao {
         """)
     fun getPokemons(): Flow<List<PokemonEntity>>
 
-    @Query("""
-        SELECT * FROM pokemon
-        WHERE name like :name
-        """)
-    fun searchPokemonByName(name: String): Result<List<PokemonEntity>>
-
     // Type
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -123,4 +117,10 @@ interface PokeDao {
         )
         """)
     fun getPokemonLocationAreaByPokemonId(pokemonId: Int): List<LocationAreaEntity>
+
+    @Query("""
+        SELECT * FROM pokemon
+        WHERE name like :name
+        """)
+    fun searchPokemonByName(name: String): List<PokemonEntity>
 }
