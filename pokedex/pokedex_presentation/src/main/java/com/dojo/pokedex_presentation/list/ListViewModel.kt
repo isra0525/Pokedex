@@ -1,5 +1,6 @@
 package com.dojo.pokedex_presentation.list
 
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -11,6 +12,7 @@ import com.dojo.pokedex_presentation.list.components.ListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,15 +21,11 @@ import javax.inject.Inject
 class ListViewModel @Inject constructor(
     private val useCases: PokedexUseCases
 ): ViewModel() {
-    var state by mutableStateOf(ListState())
+    var state = MutableStateFlow(ListState())
         private set
 
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
-
-    init {
-        onEvent(ListEvent.OnLoadPokemons)
-    }
 
     fun onEvent(event: ListEvent) {
         when(event) {
@@ -37,11 +35,14 @@ class ListViewModel @Inject constructor(
             is ListEvent.OnClickPokemon -> {
             }
             is ListEvent.OnQueryChange -> {
-                state = state.copy(query = event.query)
+                state.value = state.value.copy(query = event.query)
             }
             is ListEvent.OnSearch -> executeSearch()
             is ListEvent.OnSearchFocusChange -> {
-                state = state.copy(isHintVisible = !event.isFocussed && state.query.isBlank())
+                state.value = state.value.copy(
+                    isHintVisible = !event.isFocussed && state.value.query.isBlank(),
+                    pokemons = emptyList()
+                )
             }
         }
     }
@@ -49,7 +50,7 @@ class ListViewModel @Inject constructor(
     fun execGetPokemonsStored(){
         viewModelScope.launch(Dispatchers.IO) {
             useCases.getStoredPokemons().collect { pokemonList ->
-                state = state.copy(
+                state.value = state.value.copy(
                     pokemons = pokemonList
                 )
             }
@@ -57,14 +58,11 @@ class ListViewModel @Inject constructor(
     }
 
     private fun executeSearch() {
-        viewModelScope.launch {
-            state = state.copy(
-                isSearching = true,
-                pokemons = emptyList()
-            )
-            useCases.searchPokemonByName(state.query)
+        viewModelScope.launch(Dispatchers.IO) {
+            useCases.searchPokemonByName(state.value.query)
                 .onSuccess { pokemons ->
-                    state = state.copy(
+                    println(pokemons)
+                    state.value = state.value.copy(
                         pokemons = pokemons,
                         isSearching = false,
                         query = ""

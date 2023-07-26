@@ -120,7 +120,13 @@ interface PokeDao {
 
     @Query("""
         SELECT * FROM pokemon
-        WHERE name like :name
+        WHERE name like '%'||:name||'%'
         """)
     fun searchPokemonByName(name: String): List<PokemonEntity>
+
+    @Query("""
+        SELECT * FROM pokemon
+        WHERE id = :id
+        """)
+    fun getPokemonById(id: Int): PokemonEntity
 }

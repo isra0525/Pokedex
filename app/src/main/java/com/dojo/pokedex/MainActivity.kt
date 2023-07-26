@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.dojo.core.navigation.Route
 import com.dojo.pokedex.ui.theme.PokedexTheme
+import com.dojo.pokedex_presentation.detail.DetailScreen
 import com.dojo.pokedex_presentation.list.ListScreen
 import com.dojo.pokedex_presentation.loader.LoaderScreen
 import com.dojo.pokedex_presentation.welcome.WelcomeScreen
@@ -45,7 +46,7 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(
                             route = Route.POKEMONLOADER + "/{quantity}",
-                            arguments = listOf(navArgument("quantity",) { type = NavType.IntType})
+                            arguments = listOf(navArgument("quantity") { type = NavType.IntType})
                         ) {
                             val quantity = it.arguments?.getInt("quantity")!!
                             LoaderScreen(
@@ -54,10 +55,21 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         composable(Route.POKEMONLIST) {
-                            ListScreen()
-                        }
-                        composable(Route.POKEMONDETAIL) {
+                            ListScreen(
+                                OnNavigateToDetail = { pokemonId ->
+                                    navController.navigate(Route.POKEMONDETAIL + "/$pokemonId")
 
+                                }
+                            )
+                        }
+                        composable(
+                            route = Route.POKEMONDETAIL + "/{pokemonId}",
+                            arguments = listOf(navArgument("pokemonId") {type = NavType.IntType})
+                        ) {
+                            val pokemonId = it.arguments?.getInt("pokemonId")!!
+                            DetailScreen(
+                                pokemonId = pokemonId
+                            )
                         }
                     }
                 }

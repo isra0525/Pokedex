@@ -3,6 +3,7 @@ package com.dojo.pokedex_presentation.list.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
@@ -33,7 +34,8 @@ import com.dojo.pokedex_domain.model.PokemonType
 
 @Composable
 fun PokemonItemGrid(
-    pokemon: Pokemon
+    pokemon: Pokemon,
+    OnClickPokemon: () -> Unit
 ){
 
     Row(
@@ -43,7 +45,7 @@ fun PokemonItemGrid(
             .clip(
                 RoundedCornerShape(
                 bottomStart = 20.dp
-            )
+                )
             )
             .shadow(2.dp, RoundedCornerShape(
                 bottomStart = 20.dp
@@ -57,7 +59,9 @@ fun PokemonItemGrid(
                 )
             )
             .background(Color.White)
-            .padding(end = 10.dp, start = 10.dp),
+            .padding(end = 10.dp, start = 10.dp)
+            .clickable { OnClickPokemon() },
+
     ) {
         Column(
             modifier = Modifier
@@ -117,6 +121,6 @@ fun PokemonItemGridPreview() {
         listOf(PokemonLocationArea("magisterio", "sdfgsdfg"))
     )
 
-    PokemonItemGrid(pokemon = poke)
+    //PokemonItemGrid(pokemon = poke)
 
 }

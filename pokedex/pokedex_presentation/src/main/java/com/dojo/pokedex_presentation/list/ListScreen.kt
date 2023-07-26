@@ -15,6 +15,8 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -27,19 +29,26 @@ import com.dojo.pokedex_presentation.list.components.SearchTextField
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ListScreen(
+    OnNavigateToDetail: (Int) -> Unit,
     viewModel: ListViewModel = hiltViewModel()
 ) {
-    val state = viewModel.state
+    val state = viewModel.state.collectAsState()
     val keyBoardController = LocalSoftwareKeyboardController.current
+    LaunchedEffect(key1 = true) {
+        viewModel.onEvent(ListEvent.OnLoadPokemons)
+    }
+
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(5.dp)
     ) {
         SearchTextField(
-            text = state.query,
+            text = state.value.query,
             onValueChange = {
                 viewModel.onEvent(ListEvent.OnQueryChange(it))
             },
-            shouldShowHint = state.isHintVisible,
+            shouldShowHint = state.value.isHintVisible,
             onSearch = {
                 keyBoardController?.hide()
                 viewModel.onEvent(ListEvent.OnSearch)
@@ -54,8 +63,11 @@ fun ListScreen(
             horizontalArrangement = Arrangement.spacedBy(5.dp),
             columns = GridCells.Adaptive(minSize = 150.dp),
         ) {
-            items(state.pokemons) {
-                PokemonItemGrid(pokemon = it)
+            items(state.value.pokemons) {
+                PokemonItemGrid(
+                    pokemon = it,
+                    OnClickPokemon = { OnNavigateToDetail(it.id) }
+                )
                 Spacer(modifier = Modifier.height(10.dp))
             }
         }

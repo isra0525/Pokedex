@@ -12,4 +12,6 @@ interface PokedexRepository {
 
     fun getPokemons(): Flow<List<Pokemon>>
 
+    fun getPokemonById(id: Int): Pokemon
+
 }

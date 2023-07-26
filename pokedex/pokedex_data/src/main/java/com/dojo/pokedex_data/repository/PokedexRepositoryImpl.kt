@@ -120,5 +120,14 @@ class PokedexRepositoryImpl(
         } }
     }
 
+    override fun getPokemonById(id: Int): Pokemon {
+        return dao.getPokemonById(id).let {
+            val listTypes = dao.getPokemonTypeByPokemonId(it.id)
+            val listAbilities = dao.getPokemonAbilityByPokemonId(it.id)
+            val listLocation = dao.getPokemonLocationAreaByPokemonId(it.id)
+            it.ToPokemonDomain(listTypes, listAbilities, listLocation)
+        }
+    }
+
 
 }
