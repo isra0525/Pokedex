@@ -20,6 +20,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dojo.pokedex_presentation.list.components.PokemonItem
@@ -44,6 +46,9 @@ fun ListScreen(
             .padding(5.dp)
     ) {
         SearchTextField(
+            modifier = Modifier.semantics {
+              contentDescription = "InputSearch"
+            },
             text = state.value.query,
             onValueChange = {
                 viewModel.onEvent(ListEvent.OnQueryChange(it))

@@ -20,6 +20,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -57,7 +59,10 @@ fun WelcomeScreen(
             
             PokeTextField(
                 text = viewModel.quantity,
-                onValueChange = viewModel::onQuantityEnter
+                onValueChange = viewModel::onQuantityEnter,
+                modifier = Modifier.semantics {
+                    contentDescription = "quantity"
+                }
             )
         }
         Button(
@@ -75,6 +80,7 @@ fun WelcomeScreen(
 fun PokeTextField(
     text: String,
     onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
     textStyle: TextStyle = TextStyle(
         color = MaterialTheme.colors.onSecondary,
         fontSize = 70.sp,
@@ -83,6 +89,7 @@ fun PokeTextField(
 ) {
 
     BasicTextField(
+        modifier = modifier,
         textStyle = textStyle,
         value = text,
         onValueChange = onValueChange,

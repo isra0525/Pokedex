@@ -11,7 +11,7 @@ object Testing {
     private const val truthVersion = "1.1.3"
     const val truth = "com.google.truth:truth:$truthVersion"
 
-    private const val mockkVersion = "1.10.0"
+    private const val mockkVersion = "1.13.5"
     const val mockk = "io.mockk:mockk:$mockkVersion"
     const val mockkAndroid = "io.mockk:mockk-android:$mockkVersion"
 
@@ -30,4 +30,7 @@ object Testing {
 
     private const val espressoVersion = "3.5.1"
     const val espressoCore = "androidx.test.espresso:espresso-core:$espressoVersion"
+
+    private const val testAndroidNavigation = "2.5.3"
+    const val navigationTesting = "androidx.navigation:navigation-testing:$testAndroidNavigation"
 }

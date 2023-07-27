@@ -22,6 +22,8 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -36,9 +38,7 @@ fun SearchTextField(
     shouldShowHint: Boolean = true,
     onFocusChanged: (FocusState) -> Unit
 ) {
-    Box(
-        modifier = modifier
-    ) {
+    Box {
         BasicTextField(
             value = text,
             onValueChange = onValueChange,
@@ -52,7 +52,7 @@ fun SearchTextField(
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Search
             ),
-            modifier = Modifier
+            modifier = modifier
                 .clip(RoundedCornerShape(5.dp))
                 .padding(2.dp)
                 .shadow(
@@ -78,7 +78,9 @@ fun SearchTextField(
         }
         IconButton(
             onClick = onSearch,
-            modifier = Modifier.align(Alignment.CenterEnd)
+            modifier = Modifier
+                .align(Alignment.CenterEnd)
+                .semantics { contentDescription = "Search" }
         ) {
             Icon(
                 imageVector = Icons.Filled.Search,

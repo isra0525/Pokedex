@@ -16,7 +16,7 @@ android {
         versionCode = ProjectConfig.versionCode
         versionName = ProjectConfig.versionName
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.dojo.pokedex.HiltTestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -43,6 +43,8 @@ android {
     packagingOptions {
         resources {
             excludes.add("/META-INF/{AL2.0,LGPL2.1}")
+            excludes.add("META-INF/LICENSE.md")
+            excludes.add("META-INF/LICENSE-notice.md")
         }
     }
 
@@ -109,4 +111,7 @@ dependencies {
     androidTestImplementation(Testing.hiltTesting)
     kaptAndroidTest(DaggerHilt.hiltCompiler)
     androidTestImplementation(Testing.testRunner)
+    androidTestImplementation(Testing.navigationTesting)
+    androidTestImplementation(Testing.espressoCore)
+    debugImplementation(Compose.composeUiTestAndroid)
 }
