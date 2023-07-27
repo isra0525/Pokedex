@@ -134,7 +134,6 @@ class PokedexEtoETest {
             startsWith(Route.POKEMONLIST)
         )
 
-
         composeRule
             .onNodeWithContentDescription("InputSearch")
             .assertIsDisplayed()
